@@ -24,7 +24,6 @@ Auth::routes(['verify' => true]);
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/excel', 'TransaksiController@excel')->name('laporan.excel');
     Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
-    Route::get('dashboard', 'DashboardController@index')->name('dashboard.index')->middleware('verified');
     Route::resource('kategori', 'KategoriController');
     Route::get('/upload/kategori/excel', 'KategoriController@excel')->name('kategori.excel');
     Route::resource('tiket', 'TiketController');
