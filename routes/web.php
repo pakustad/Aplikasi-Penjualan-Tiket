@@ -22,15 +22,16 @@ Route::get('/', function () {
 Auth::routes(['verify' => true]);
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/excel','TransaksiController@excel')->name('laporan.excel');
+    Route::get('/excel', 'TransaksiController@excel')->name('laporan.excel');
     Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
+    Route::get('dashboard', 'DashboardController@index')->name('dashboard.index')->middleware('verified');
     Route::resource('kategori', 'KategoriController');
-    Route::get('/upload/kategori/excel','KategoriController@excel')->name('kategori.excel');
+    Route::get('/upload/kategori/excel', 'KategoriController@excel')->name('kategori.excel');
     Route::resource('tiket', 'TiketController');
 
-    Route::get('transaksi','TransaksiController@index')->name('transaksi.index');
-    Route::post('transaksi','TransaksiController@store')->name('transaksi.store');
-    Route::delete('transaksi/{id}','TransaksiController@destroy')->name('transaksi.destroy');
-    Route::get('transaksi/update','TransaksiController@update')->name('transaksi.update');
-    Route::get('transaksi/pdf','TransaksiController@laporan')->name('transaksi.laporan');
+    Route::get('transaksi', 'TransaksiController@index')->name('transaksi.index');
+    Route::post('transaksi', 'TransaksiController@store')->name('transaksi.store');
+    Route::delete('transaksi/{id}', 'TransaksiController@destroy')->name('transaksi.destroy');
+    Route::get('transaksi/update', 'TransaksiController@update')->name('transaksi.update');
+    Route::get('transaksi/pdf', 'TransaksiController@laporan')->name('transaksi.laporan');
 });

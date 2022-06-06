@@ -68,24 +68,32 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/home') }}">Home</a>
+                            <a href="{{ route('home') }}">Dashboard</a>
+                        @if (Route::has('logout'))
+                                <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                </form>
+                        @endif
                     @else
                         <a href="{{ route('login') }}">Login</a>
 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
                     @endauth
                 </div>
             @endif
 
             <div class="content">
-                <div class="title m-b-md">
+                <div class="title">
                     Selamat Datang
                 </div>
 
                 <div class="links">
-                    <strong>ini adalah aplikasi backend penjualan tiket</strong>
+                    <strong>Di Taman Rekreasi Cimalati Sukabumi</strong>
                 </div>
             </div>
         </div>
