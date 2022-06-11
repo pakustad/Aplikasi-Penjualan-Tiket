@@ -20,9 +20,7 @@ class CreateTiketsTable extends Migration
             $table->string('jenis_tiket');
             $table->unsignedBigInteger('id_kategori');
             $table->foreign('id_kategori')->references('id')->on('kategoris')->onDelete('cascade');
-            $table->string('jumlah_tiket');
             $table->timestamps();
-
         });
     }
 
