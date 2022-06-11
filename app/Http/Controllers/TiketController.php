@@ -15,7 +15,7 @@ class TiketController extends Controller
     public function index()
     {
         $tiket = Tiket::all();
-        return view('tiket.index',compact('tiket'));
+        return view('tiket.index', compact('tiket'));
     }
 
     /**
@@ -44,7 +44,7 @@ class TiketController extends Controller
             'jumlah_tiket' => 'required',
         ]);
         Tiket::create($request->all());
-        return redirect('tiket')->with('pesan','tiket berhasil ditambah.');
+        return redirect('tiket')->with('pesan', 'tiket berhasil ditambah.');
     }
 
     /**
@@ -67,7 +67,7 @@ class TiketController extends Controller
     public function edit($id)
     {
         $tiket = Tiket::findOrFail($id);
-        return view('tiket.edit',compact('tiket'));
+        return view('tiket.edit', compact('tiket'));
     }
 
     /**
@@ -87,7 +87,7 @@ class TiketController extends Controller
             'jumlah_tiket' => 'required',
         ]);
         Tiket::find($id)->update($request->all());
-        return redirect('tiket')->with('pesan','tiket berhasil diupdate.');
+        return redirect('tiket')->with('pesan', 'tiket berhasil diupdate.');
     }
 
     /**
@@ -99,6 +99,6 @@ class TiketController extends Controller
     public function destroy($id)
     {
         Tiket::find($id)->delete();
-        return redirect('tiket')->with('pesan','tiket berhasil dihapus.');
+        return redirect('tiket')->with('pesan', 'tiket berhasil dihapus.');
     }
 }
