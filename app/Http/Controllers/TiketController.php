@@ -83,7 +83,6 @@ class TiketController extends Controller
             'harga_tiket' => 'required|numeric',
             'jenis_tiket' => 'required',
             'id_kategori' => 'required',
-            'jumlah_tiket' => 'required',
         ]);
         Tiket::find($id)->update($request->all());
         return redirect('tiket')->with('pesan', 'tiket berhasil diupdate.');
