@@ -39,7 +39,6 @@
                   <th>Nama Tiket</th>
                   <th>Jenis Tiket</th>
                   <th>Kategori Tiket</th>
-                  <th>Jumlah Tiket</th>
                   <th>Harga Tiket</th>
                   <th>Created At</th>
                   <th>Aksi</th>
@@ -55,7 +54,6 @@
                   <td>{{ $t->name_tiket }}</td>
                   <td>{{ $t->jenis_tiket }}</td>
                   <td>{{ $t->kategori->nama_kategori }}</td>
-                  <td>{{ $t->jumlah_tiket }}</td>
                   <td> @currency($t->harga_tiket) </td>
                   <td>{{ $t->created_at->format('d M Y') }}</td>
                   <th class="d-flex">
