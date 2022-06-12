@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Transaksi;
 use Fpdf;
 use App\Exports\TransaksiExports;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class TransaksiController extends Controller
 {
@@ -13,6 +15,18 @@ class TransaksiController extends Controller
     {
         $transaksi = Transaksi::where('status', '0')->get();
         return view('transaksi.index', compact('transaksi'));
+    }
+
+    public function create()
+    {
+        // Create unique code
+        $code = uniqid("inv-") . "-" . time();
+        Session::put("transactionCode", $code);
+        return redirect("transaksi/new");
+    }
+
+    public function new()
+    {
     }
 
     public function store(Request $request)

@@ -33,4 +33,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('transaksi/{id}', 'TransaksiController@destroy')->name('transaksi.destroy');
     Route::get('transaksi/update', 'TransaksiController@update')->name('transaksi.update');
     Route::get('transaksi/pdf', 'TransaksiController@laporan')->name('transaksi.laporan');
+    Route::get("transaksi/create", "TransaksiController@create");
+    Route::get("transaksi/new", "TransaksiController@new");
 });
