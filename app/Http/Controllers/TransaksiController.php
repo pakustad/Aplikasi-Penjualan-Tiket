@@ -27,7 +27,6 @@ class TransaksiController extends Controller
 
     public function new()
     {
-        echo Session::get("transactionCode");
     }
 
     public function checkout()

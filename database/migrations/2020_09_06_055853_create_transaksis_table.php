@@ -15,6 +15,7 @@ class CreateTransaksisTable extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string("code", 200);
             $table->unsignedBigInteger('id_tiket');
             $table->foreign('id_tiket')->references('id')->on('tikets')->onDelete('cascade');
             $table->string('qty');
