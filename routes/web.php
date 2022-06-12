@@ -34,5 +34,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('transaksi/update', 'TransaksiController@update')->name('transaksi.update');
     Route::get('transaksi/pdf', 'TransaksiController@laporan')->name('transaksi.laporan');
     Route::get("transaksi/create", "TransaksiController@create");
-    Route::get("transaksi/new", "TransaksiController@new");
+    Route::get("transaksi/new", "TransaksiController@new")->middleware("create.transaction");
+    Route::get("transaksi/checkout", "TransaksiController@checkout");
 });
