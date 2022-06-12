@@ -33,7 +33,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('transaksi/{id}', 'TransaksiController@destroy')->name('transaksi.destroy');
     Route::get('transaksi/update', 'TransaksiController@update')->name('transaksi.update');
     Route::get('transaksi/pdf', 'TransaksiController@laporan')->name('transaksi.laporan');
-    Route::get("transaksi/create", "TransaksiController@create");
+    Route::get("transaksi/create", "TransaksiController@create")->name("transaksi.create");
     Route::get("transaksi/new", "TransaksiController@new")->middleware("create.transaction");
-    Route::get("transaksi/checkout", "TransaksiController@checkout");
+    Route::get("transaksi/checkout", "TransaksiController@checkout")->middleware("create.transaction")->name("transaksi.checkout");
+    Route::get("transaksi/print/{code}", "TransaksiController@print")->middleware("create.transaction")->name("transaksi.print");
 });

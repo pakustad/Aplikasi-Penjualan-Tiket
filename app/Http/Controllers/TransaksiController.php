@@ -13,25 +13,39 @@ class TransaksiController extends Controller
 {
     public function index()
     {
-        $transaksi = Transaksi::where('status', '0')->get();
-        return view('transaksi.index', compact('transaksi'));
+        $transactions = Transaksi::orderBy("created_at", "DESC")->get();
+        return view("transaksi.index", compact("transactions"));
     }
 
     public function create()
     {
         // Create unique code
-        $code = uniqid("inv-") . "-" . time();
+        $latestTransaction = Transaksi::whereYear("created_at", 2022)->orderBy("id", "DESC")->first();
+        $code = null;
+        if (empty($latestTransaction)) {
+            $code = date("d-m-Y") . "-" . "1" . "-" . uniqid();
+        } else {
+            $currentCode = explode("-", $latestTransaction->code)[3];
+            $code = date("d-m-Y") . "-" . ++$currentCode . "-" . uniqid();
+        }
         Session::put("transactionCode", $code);
         return redirect("transaksi/new");
     }
 
     public function new()
     {
+        $code = Session::get("transactionCode");
+        $transactions = Transaksi::where("code", $code)->get();
+        return view("transaksi.new", ["transactions" => $transactions]);
     }
 
     public function checkout()
     {
+        $code = session("transactionCode");
+        $transaksi = new Transaksi();
+        $transaksi->checkout($code);
         Session::forget("transactionCode");
+        return redirect("transaksi");
     }
 
     public function store(Request $request)
@@ -40,13 +54,13 @@ class TransaksiController extends Controller
             'qty' => 'required'
         ]);
         Transaksi::create($request->except('submit'));
-        return redirect('transaksi')->with('pesan', 'berhasil menambahkan data.');
+        return redirect('transaksi/new')->with('pesan', 'berhasil menambahkan data.');
     }
 
     public function destroy($id)
     {
         Transaksi::findOrFail($id)->delete();
-        return redirect('transaksi')->with('pesan', 'berhasil dicancel.');
+        return redirect('transaksi/new')->with('pesan', 'berhasil dicancel.');
     }
 
     public function update()
@@ -95,5 +109,15 @@ class TransaksiController extends Controller
     {
         libxml_use_internal_errors(true);
         return (new TransaksiExports)->download('penjualan_tiket.xlsx');
+    }
+
+    public function print($code)
+    {
+        $transactions = Transaksi::where("code", $code)->get();
+        return view("transaksi.print", compact('transactions'));
+    }
+
+    public function rollback($code)
+    {
     }
 }
