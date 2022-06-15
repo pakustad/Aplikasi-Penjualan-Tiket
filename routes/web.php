@@ -38,4 +38,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get("transaksi/checkout", "TransaksiController@checkout")->middleware("create.transaction")->name("transaksi.checkout");
     Route::get("transaksi/print/{code}", "TransaksiController@print")->middleware("create.transaction")->name("transaksi.print");
     Route::delete("transaksi/rollback/{code}", "TransaksiController@rollback")->middleware("create.transaction")->name("transaksi.rollback");
+
+    Route::prefix("transactions")->group(function () {
+        Route::get("/", "TransactionController@index")->name("transactions");
+        Route::get("create", "TransactionController@create")->name("transactions.create");
+        Route::get("new", "TransactionController@new")->name("transactions.new");
+        Route::put("checkout/{id}", "TransactionController@checkout")->name("transactions.checkout");
+        Route::delete("rollback/{id}", "TransactionController@rollback")->name("transactions.rollback");
+        Route::get("print/{id}", "TransactionController@print")->name("transactions.print");
+    });
+
+    Route::prefix("transaction-details")->group(function () {
+        Route::post("/", "TransactionDetailController@store")->name("transaction-details.store");
+        Route::delete("{id}", "TransactionDetailController@delete")->name("transaction-detail.delete");
+    });
 });
