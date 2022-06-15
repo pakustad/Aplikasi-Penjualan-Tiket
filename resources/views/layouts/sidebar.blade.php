@@ -78,13 +78,13 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ route('transaksi.index') }}" class="nav-link">
+              <a href="{{ route('transactions') }}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Data Transaksi</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('transaksi.create') }}" class="nav-link">
+              <a href="{{ route('transactions.create') }}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Tambah Transaksi</p>
               </a>
