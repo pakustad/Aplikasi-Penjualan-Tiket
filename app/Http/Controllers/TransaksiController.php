@@ -119,5 +119,12 @@ class TransaksiController extends Controller
 
     public function rollback($code)
     {
+        $transactions = Transaksi::where("code", $code)->pluck("id")->toArray();
+        // Deleting transactions
+        if (!empty($transactions)) {
+            Transaksi::destroy($transactions);
+        }
+        Session::forget("transactionCode");
+        return redirect("transaksi");
     }
 }

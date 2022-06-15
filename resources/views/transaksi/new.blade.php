@@ -104,9 +104,11 @@
                             </td>
                             <td colspan="3"></td>
                             <td>
-                                <div class="float-right">
-                                    <a href="#" class="btn btn-sm btn-danger">batal</a>
-                                    <a href="{{ route('transaksi.print', ['code' => session('transactionCode')] ) }}" class="btn btn btn-sm btn-primary"><i class="fas fa-print"></i></a>
+                                <div class="d-flex justify-content-end">
+                                    {!! Form::open(["route" => ["transaksi.rollback", session("transactionCode")], "method" => "DELETE"]) !!}
+                                    <button class="btn btn-sm btn-danger mr-2" type="submit">Batal</button>
+                                    {!! Form::close() !!}
+                                    <a href="{{ route('transaksi.print', ['code' => session('transactionCode')] ) }}" class="btn btn btn-sm btn-primary mr-2"><i class="fas fa-print"></i></a>
                                     <a href="{{ route('transaksi.checkout') }}" class="btn btn-sm btn-success">Selesai</a>
                                 </div>
                             </td>

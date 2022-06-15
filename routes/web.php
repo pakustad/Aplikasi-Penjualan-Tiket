@@ -37,4 +37,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get("transaksi/new", "TransaksiController@new")->middleware("create.transaction");
     Route::get("transaksi/checkout", "TransaksiController@checkout")->middleware("create.transaction")->name("transaksi.checkout");
     Route::get("transaksi/print/{code}", "TransaksiController@print")->middleware("create.transaction")->name("transaksi.print");
+    Route::delete("transaksi/rollback/{code}", "TransaksiController@rollback")->middleware("create.transaction")->name("transaksi.rollback");
 });
