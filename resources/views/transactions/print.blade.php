@@ -100,8 +100,9 @@
         </table>
         <p class="centered mt-1">Terima Kasih</p>
     </div>
-
-    <button id="btnPrint" class="hidden-print mt-6">Kembali</button>
+    <div class="mt-6">
+        <a href="{{ route("transactions") }}" class="hidden-print mt-6" style="margin-top: 4rem !important;">Kembali</a>
+    </div>
 </body>
 
 </html>

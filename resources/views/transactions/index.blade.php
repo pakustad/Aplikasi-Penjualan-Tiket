@@ -69,7 +69,7 @@
                                     </td>
                                     <td>
                                         @if ($transaction->status == 1)
-                                        <a href="" class="btn btn-sm btn-primary">
+                                        <a href="{{ route("transactions.print", ["id" => $transaction->id]) }}" class="btn btn-sm btn-primary">
                                             <i class="fas fa-print"></i>
                                         </a>
                                         @else

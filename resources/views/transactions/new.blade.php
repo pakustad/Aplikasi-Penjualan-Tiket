@@ -64,11 +64,11 @@
                                         @foreach($transactions as $transaction)
                                         <tr>
                                             <td>{{ $transaction->tiket->name_tiket }}</td>
-                                            <td>{{ $transaction->price }}</td>
+                                            <td>@currency($transaction->price)</td>
                                             <td>{{ $transaction->qty }}</td>
                                             <?php $total = $transaction->qty * $transaction->price; ?>
                                             <?php $grandTotal += $total ?>
-                                            <td class="sub">{{ $total }}</td>
+                                            <td class="sub">@currency($total)</td>
                                             <td>
                                                 <button class="btn btn-sm btn-danger" type="button" onclick="deleteTransactionDetail(`{{ $transaction->id }}`)">
                                                     <i class="fas fa-trash"></i>
@@ -113,17 +113,16 @@
                                     <input type="text" name="change" id="change" class="form-control" readonly>
                                 </div>
                             </div>
-                            <div class="row p-1">
-                                <div class="ml-auto">
-                                    <button class="btn btn-danger btn-sm mr-2" type="button" onclick="rollback(`{{ session("transactionID") }}`)">Batal</button>
-                                    <button class="btn btn-primary btn-sm" type="submit">Simpan</button>
-                                </div>
+                            <div class="ml-auto">
+                                <button class="btn btn-danger btn-sm mr-2" type="button" onclick="rollback(`{{ session("transactionID") }}`)">Batal</button>
+                                <button class="btn btn-primary btn-sm" type="submit">Simpan</button>
                             </div>
-                        </form>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </section>
 
@@ -143,6 +142,7 @@
 
 @section("scripts")
 
+
 <script>
     function deleteTransactionDetail(id) {
         document.getElementById("form-delete").setAttribute("action", `<?= url("") ?>/transaction-details/${id}`);
@@ -153,27 +153,62 @@
         document.getElementById("rollback").setAttribute("action", `<?= url("")  ?>/transactions/rollback/${id}`);
         document.forms["rollback"].submit();
     }
+
+    function formatRupiah(str, prefix = "Rp ") {
+        // return new Intl.NumberFormat("id-ID", {style: "currency", currency: "IDR", minimumFractionDigits: 0}).format(num)
+        var number_string = str.toString().replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        // tambahkan titik jika yang di input sudah menjadi angka ribuan
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
+    }
+
+    function clearFormat(num) {
+        return num.replace("Rp ", "").replace(".", "");
+    }
 </script>
 
 <script>
+    // Format grand total value
+    document.getElementById("dummy-total").value = formatRupiah(document.getElementById("dummy-total").value)
+
+    document.getElementById("discount").addEventListener("keyup", function(e) {
+        const discount = e.target.value
+        e.target.value = formatRupiah(discount.replace("Rp", "").replace(".", ""));
+    });
+
+    document.getElementById("money-paid").addEventListener("keyup", function(e) {
+        const moneyPaid = e.target.value
+        e.target.value = formatRupiah(moneyPaid.replace("Rp", "").replace(".", ""));
+    });
+
     document.getElementById("discount").addEventListener("keyup", function(e) {
         const change = document.getElementById("change").value = "";
         const moneyPaid = document.getElementById("money-paid").value = "";
         const total = `{{ $grandTotal }}`;
-        const discount = e.target.value / 100;
-        const totalPrice = total - (total * discount);
+        const discount = clearFormat(e.target.value);
+        const totalPrice = total - discount;
         if (e.target.value == "") {
-            document.getElementById("dummy-total").value = total;
+            document.getElementById("dummy-total").value = formatRupiah(total);
         } else {
-            document.getElementById("dummy-total").value = totalPrice;
+            document.getElementById("dummy-total").value = formatRupiah(`${totalPrice}`, "rp");
         }
     });
 
     document.getElementById("money-paid").addEventListener("keyup", function(e) {
-        const total = document.getElementById("dummy-total").value;
-        const change = e.target.value - total;
+        const total = clearFormat(document.getElementById("dummy-total").value);
+        const change = clearFormat(e.target.value) - total;
         if (!e.target.value == '' && change >= 0) {
-            document.getElementById("change").value = change;
+            document.getElementById("change").value = formatRupiah(`${change}`);
         } else {
             document.getElementById("change").value = "";
         }

@@ -42,14 +42,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::prefix("transactions")->group(function () {
         Route::get("/", "TransactionController@index")->name("transactions");
         Route::get("create", "TransactionController@create")->name("transactions.create");
-        Route::get("new", "TransactionController@new")->name("transactions.new");
-        Route::put("checkout/{id}", "TransactionController@checkout")->name("transactions.checkout");
-        Route::delete("rollback/{id}", "TransactionController@rollback")->name("transactions.rollback");
+        Route::get("new", "TransactionController@new")->middleware("create.transaction")->name("transactions.new");
+        Route::put("checkout/{id}", "TransactionController@checkout")->middleware("create.transaction")->name("transactions.checkout");
+        Route::delete("rollback/{id}", "TransactionController@rollback")->middleware("create.transaction")->name("transactions.rollback");
         Route::get("print/{id}", "TransactionController@print")->name("transactions.print");
     });
 
     Route::prefix("transaction-details")->group(function () {
-        Route::post("/", "TransactionDetailController@store")->name("transaction-details.store");
-        Route::delete("{id}", "TransactionDetailController@delete")->name("transaction-detail.delete");
+        Route::post("/", "TransactionDetailController@store")->middleware("create.transaction")->name("transaction-details.store");
+        Route::delete("{id}", "TransactionDetailController@delete")->middleware("create.transaction")->name("transaction-detail.delete");
     });
 });

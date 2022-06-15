@@ -54,14 +54,14 @@ class TransactionController extends Controller
         $transactionID = session("transactionID");
         $transaction = Transaction::find($transactionID);
         $transaction->status = "1";
-        $transaction->grand_total = $request->input("grand_total");
-        $transaction->discount = $request->input("discount");
-        $transaction->money_paid = $request->input("money_paid");
-        $transaction->change = $request->input("change");
+        $transaction->grand_total = $this->removeCurrency($request->input("grand_total"));
+        $transaction->discount = $this->removeCurrency($request->input("discount"));
+        $transaction->money_paid = $this->removeCurrency($request->input("money_paid"));
+        $transaction->change = $this->removeCurrency($request->input("change"));
         $transaction->save();
         session()->forget("transactionID");
         session()->save();
-        return redirect(route("transactions"));
+        return redirect(route("transactions.print", ["id" => $transactionID]));
     }
 
     public function rollback($id)
@@ -81,5 +81,10 @@ class TransactionController extends Controller
         $transaction = Transaction::findOrFail($id);
         $transactionDetails = TransactionDetail::where("transaction_id", $id)->get();
         return view("transactions.print", compact("transaction", "transactionDetails"));
+    }
+
+    protected function removeCurrency($str)
+    {
+        return str_replace(["Rp ", "."], "", $str);
     }
 }

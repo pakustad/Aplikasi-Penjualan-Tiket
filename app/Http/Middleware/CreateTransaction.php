@@ -16,8 +16,8 @@ class CreateTransaction
      */
     public function handle($request, Closure $next)
     {
-        if (!Session::has("transactionCode")) {
-            return redirect("transaksi/create");
+        if (!Session::has("transactionID")) {
+            abort(401);
         }
         return $next($request);
     }
